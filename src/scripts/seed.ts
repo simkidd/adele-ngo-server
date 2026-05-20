@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import User from "../models/user.model";
 import { Center } from "../models/center.model";
 import { Program } from "../models/program.model";
+import { hashPassword } from "../utils/auth";
 
 dotenv.config();
 
@@ -498,7 +499,7 @@ async function seed() {
   const superAdmin = await User.create({
     fullName: "Foundation Admin",
     email: "admin@adelefoundation.org",
-    password: "Adele2025!",
+    password: await hashPassword("Adele2025!"),
     role: "super_admin",
   });
   console.log("   ✅ Super admin: admin@adelefoundation.org / Adele2025!");
@@ -535,7 +536,7 @@ async function seed() {
     await User.create({
       fullName: `${center.name} Officer`,
       email: `officer.${center.code.toLowerCase()}@adelefoundation.org`,
-      password: "Officer2025!",
+      password: await hashPassword("Officer2025!"),
       role: "program_officer",
       centerId: center._id,
     });
@@ -548,7 +549,7 @@ async function seed() {
   await User.create({
     fullName: "Blog Editor",
     email: "editor@adelefoundation.org",
-    password: "Editor2025!",
+    password: await hashPassword("Editor2025!"),
     role: "blog_editor",
   });
   console.log("   ✅ editor@adelefoundation.org / Editor2025!");

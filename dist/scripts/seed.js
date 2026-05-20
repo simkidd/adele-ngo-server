@@ -8,6 +8,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const user_model_1 = __importDefault(require("../models/user.model"));
 const center_model_1 = require("../models/center.model");
 const program_model_1 = require("../models/program.model");
+const auth_1 = require("../utils/auth");
 dotenv_1.default.config();
 const MONGODB_URI = process.env.MONGODB_URI ?? "mongodb://localhost:27017/adele-foundation";
 // ── Seed data ─────────────────────────────────────────────────────────────────
@@ -458,7 +459,7 @@ async function seed() {
     const superAdmin = await user_model_1.default.create({
         fullName: "Foundation Admin",
         email: "admin@adelefoundation.org",
-        password: "Adele2025!",
+        password: await (0, auth_1.hashPassword)("Adele2025!"),
         role: "super_admin",
     });
     console.log("   ✅ Super admin: admin@adelefoundation.org / Adele2025!");
@@ -489,7 +490,7 @@ async function seed() {
         await user_model_1.default.create({
             fullName: `${center.name} Officer`,
             email: `officer.${center.code.toLowerCase()}@adelefoundation.org`,
-            password: "Officer2025!",
+            password: await (0, auth_1.hashPassword)("Officer2025!"),
             role: "program_officer",
             centerId: center._id,
         });
@@ -499,7 +500,7 @@ async function seed() {
     await user_model_1.default.create({
         fullName: "Blog Editor",
         email: "editor@adelefoundation.org",
-        password: "Editor2025!",
+        password: await (0, auth_1.hashPassword)("Editor2025!"),
         role: "blog_editor",
     });
     console.log("   ✅ editor@adelefoundation.org / Editor2025!");
