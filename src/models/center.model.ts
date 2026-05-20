@@ -8,8 +8,10 @@ const centerSchema = new Schema<ICenter>(
       type: String,
       required: true,
       unique: true,
+      enum: ["port-harcourt", "bayelsa"],
     },
-    code: { type: String, required: true, unique: true },
+    code: { type: String, required: true, unique: true, enum: ["PH", "BY"] },
+
     state: { type: String, required: true },
     address: { type: String, required: true },
     phone: { type: String, required: true },

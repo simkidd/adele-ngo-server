@@ -27,7 +27,7 @@ export const generateRefNumber = async (
  * e.g. AEF-PH-2025-EL-000042
  */
 export const generateCertId = async (
-  centerCode: string,
+  centerCode: "PH" | "BY",
   programTitle: string,
 ): Promise<string> => {
   const year = new Date().getFullYear();
