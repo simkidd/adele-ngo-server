@@ -1,0 +1,9 @@
+export declare const sendApplicationConfirmation: (to: string, name: string, referenceNumber: string, programTitle: string, centerName: string) => Promise<void>;
+export declare const sendApplicationAccepted: (to: string, name: string, programTitle: string, centerName: string, centerAddress: string, deadline: Date) => Promise<void>;
+export declare const sendApplicationEnrolled: (to: string, name: string, programTitle: string, cohortName: string, startDate: Date, centerName: string, centerAddress: string) => Promise<void>;
+export declare const sendApplicationRejected: (to: string, name: string, programTitle: string) => Promise<void>;
+export declare const sendCertificateIssued: (to: string, name: string, programTitle: string, certId: string, pdfUrl: string, pdfBuffer: Buffer) => Promise<void>;
+export declare const sendAdminRegistrationAlert: (adminEmail: string, applicantName: string, programTitle: string, centerName: string, refNumber: string) => Promise<void>;
+export declare const sendContactConfirmation: (to: string, name: string) => Promise<void>;
+export declare const sendRsvpConfirmation: (to: string, name: string, eventTitle: string, eventDate: string, eventTime: string, eventLocation: string, seats: number) => Promise<void>;
+//# sourceMappingURL=mail.service.d.ts.map

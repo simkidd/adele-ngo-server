@@ -20,9 +20,6 @@ export interface IApplicant extends Document {
     address: string;
     passportPhoto?: string;
     nin: string;
-    ninVerified: boolean;
-    ninVerifiedAt?: Date;
-    ninData?: INinData;
     biometricEnrolled: boolean;
     biometricTemplate?: string;
     biometricEnrolledAt?: Date;

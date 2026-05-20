@@ -23,18 +23,10 @@ export declare const config: {
         API_KEY: string;
         API_SECRET: string;
     };
-    smtp: {
-        HOST: string;
-        PORT: string;
-        USER: string;
-        PASS: string;
+    brevo: {
+        API_KEY: string;
         FROM: string;
         FROM_NAME: string;
-    };
-    dojah: {
-        APP_ID: string;
-        API_KEY: string;
-        BASE_URL: string;
     };
     security: {
         ENCRYPTION_KEY: string;

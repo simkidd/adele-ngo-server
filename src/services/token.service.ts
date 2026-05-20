@@ -3,6 +3,12 @@ import { config } from "../config";
 
 type TokenType = "admin" | "applicant";
 
+export interface JwtPayload {
+  id: string;
+  role?: string;
+  type: "admin" | "applicant";
+}
+
 export const generateAccessToken = (id: string, type: TokenType): string => {
   const secret =
     type === "admin"
@@ -30,4 +36,17 @@ export const verifyRefreshToken = (
       ? config.jwt.REFRESH_SECRET
       : config.applicantJwt.REFRESH_SECRET;
   return jwt.verify(token, secret) as { id: string; type: TokenType };
+};
+
+export const verifyToken = (token: string, type: TokenType): JwtPayload => {
+  try {
+    const secret =
+      type === "admin"
+        ? config.jwt.ACCESS_SECRET
+        : config.applicantJwt.ACCESS_SECRET;
+    const decoded = jwt.verify(token, secret) as JwtPayload;
+    return decoded;
+  } catch (error) {
+    throw new Error("Invalid token");
+  }
 };

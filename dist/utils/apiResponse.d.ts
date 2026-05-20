@@ -3,7 +3,7 @@ interface ApiResponseOptions {
     success: boolean;
     message: string;
     data?: unknown;
-    meta?: Record<string, unknown>;
+    meta?: Record<string, unknown> | undefined;
 }
 export declare const sendResponse: (res: Response, statusCode: number, options: ApiResponseOptions) => Response;
 export declare const sendSuccess: (res: Response, data: unknown, message?: string, statusCode?: number, meta?: Record<string, unknown>) => Response;

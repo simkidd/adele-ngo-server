@@ -37,7 +37,7 @@ export const generateCertId = async (
     .split(/[\s&,]+/)
     .filter((w) => w.length > 2)
     .slice(0, 2)
-    .map((w) => w[0].toUpperCase())
+    .map((w) => w.charAt(0).toUpperCase())
     .join("");
 
   const prefix = `AEF-${centerCode}-${year}-${programCode}-`;

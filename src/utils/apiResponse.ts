@@ -4,7 +4,7 @@ interface ApiResponseOptions {
   success: boolean;
   message: string;
   data?: unknown;
-  meta?: Record<string, unknown>;
+  meta?: Record<string, unknown> | undefined;
 }
 
 export const sendResponse = (
