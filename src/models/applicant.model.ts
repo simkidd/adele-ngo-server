@@ -28,9 +28,6 @@ const applicantSchema = new Schema<IApplicant>(
     passportPhoto: { type: String },
 
     nin: { type: String, required: true, select: false },
-    ninVerified: { type: Boolean, default: false },
-    ninVerifiedAt: { type: Date },
-    ninData: { type: Schema.Types.Mixed },
 
     biometricEnrolled: { type: Boolean, default: false },
     biometricTemplate: { type: String, select: false },

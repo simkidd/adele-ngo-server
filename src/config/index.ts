@@ -31,19 +31,10 @@ export const config = {
     API_SECRET: process.env.CLOUDINARY_API_SECRET!,
   },
 
-  smtp: {
-    HOST: process.env.SMTP_HOST!,
-    PORT: process.env.SMTP_PORT || "587",
-    USER: process.env.SMTP_USER!,
-    PASS: process.env.SMTP_PASS!,
+  brevo: {
+    API_KEY: process.env.BREVO_API_KEY || "",
     FROM: process.env.MAIL_FROM!,
     FROM_NAME: process.env.MAIL_FROM_NAME!,
-  },
-
-  dojah: {
-    APP_ID: process.env.DOJAH_APP_ID!,
-    API_KEY: process.env.DOJAH_API_KEY!,
-    BASE_URL: process.env.DOJAH_BASE_URL!,
   },
 
   security: {

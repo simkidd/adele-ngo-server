@@ -26,10 +26,7 @@ export interface IApplicant extends Document {
   passportPhoto?: string;
 
   // NIN
-  nin: string; // encrypted at rest
-  ninVerified: boolean;
-  ninVerifiedAt?: Date;
-  ninData?: INinData;
+  nin: string;
 
   // Biometric
   biometricEnrolled: boolean;
