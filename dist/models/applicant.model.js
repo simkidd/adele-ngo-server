@@ -66,6 +66,5 @@ const applicantSchema = new mongoose_1.Schema({
     isActive: { type: Boolean, default: true },
     lastLogin: { type: Date },
 }, { timestamps: true });
-applicantSchema.index({ email: 1 });
 exports.Applicant = mongoose_1.default.model("Applicant", applicantSchema);
 //# sourceMappingURL=applicant.model.js.map

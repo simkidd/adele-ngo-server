@@ -48,7 +48,6 @@ const registrationSchema = new Schema<IRegistration>(
 registrationSchema.index({ applicantId: 1, cohortId: 1 }, { unique: true });
 registrationSchema.index({ centerId: 1, status: 1 });
 registrationSchema.index({ programId: 1, cohortId: 1 });
-registrationSchema.index({ referenceNumber: 1 });
 
 // Virtuals
 registrationSchema.virtual("applicant", {

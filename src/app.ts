@@ -2,8 +2,6 @@ import compression from "compression";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
-// import "express-async-errors";
-import mongoSanitize from "express-mongo-sanitize";
 import helmet from "helmet";
 import morgan from "morgan";
 import { config } from "./config";
@@ -20,15 +18,12 @@ const app = express();
 
 // ── Security ──────────────────────────────────────────────────────────────────
 app.use(helmet());
-app.use(mongoSanitize());
 
 // ── CORS ──────────────────────────────────────────────────────────────────────
 app.use(
   cors({
     origin: [config.app.CLIENT_URL, config.app.ADMIN_URL],
     credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
 
@@ -60,7 +55,7 @@ app.get("/api/health", (_req, res) => {
 });
 
 // ── Routes ────────────────────────────────────────────────────────────────────
-app.use("/api", routes);
+app.use("/api/v1", routes);
 
 // ── 404 handler ───────────────────────────────────────────────────────────────
 app.use((req, res) => {

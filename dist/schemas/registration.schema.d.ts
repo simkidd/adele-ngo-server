@@ -102,10 +102,10 @@ export declare const fullRegistrationSchema: z.ZodObject<{
 }, z.core.$strip>;
 export declare const updateStatusSchema: z.ZodObject<{
     status: z.ZodEnum<{
-        Enrolled: "Enrolled";
         Pending: "Pending";
         Accepted: "Accepted";
         Verified: "Verified";
+        Enrolled: "Enrolled";
         Rejected: "Rejected";
     }>;
     adminNotes: z.ZodOptional<z.ZodString>;

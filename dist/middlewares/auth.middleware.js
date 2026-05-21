@@ -4,11 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.protectApplicant = exports.protectAdmin = void 0;
-const asyncHandler_1 = require("../utils/asyncHandler");
-const apiError_1 = require("../utils/apiError");
-const user_model_1 = __importDefault(require("../models/user.model"));
 const applicant_model_1 = require("../models/applicant.model");
+const user_model_1 = __importDefault(require("../models/user.model"));
 const token_service_1 = require("../services/token.service");
+const apiError_1 = require("../utils/apiError");
+const asyncHandler_1 = require("../utils/asyncHandler");
 // ── Admin auth ────────────────────────────────────────────────────────────────
 exports.protectAdmin = (0, asyncHandler_1.asyncHandler)(async (req, _res, next) => {
     const token = req.header("Authorization")?.replace("Bearer ", "");

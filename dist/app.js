@@ -7,8 +7,6 @@ const compression_1 = __importDefault(require("compression"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const cors_1 = __importDefault(require("cors"));
 const express_1 = __importDefault(require("express"));
-// import "express-async-errors";
-const express_mongo_sanitize_1 = __importDefault(require("express-mongo-sanitize"));
 const helmet_1 = __importDefault(require("helmet"));
 const morgan_1 = __importDefault(require("morgan"));
 const config_1 = require("./config");
@@ -19,13 +17,10 @@ const error_middleware_1 = require("./middlewares/error.middleware");
 const app = (0, express_1.default)();
 // ── Security ──────────────────────────────────────────────────────────────────
 app.use((0, helmet_1.default)());
-app.use((0, express_mongo_sanitize_1.default)());
 // ── CORS ──────────────────────────────────────────────────────────────────────
 app.use((0, cors_1.default)({
     origin: [config_1.config.app.CLIENT_URL, config_1.config.app.ADMIN_URL],
     credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
 }));
 // ── Rate limiting ─────────────────────────────────────────────────────────────
 app.use(rate_limiter_middleware_1.globalLimiter);
@@ -51,7 +46,7 @@ app.get("/api/health", (_req, res) => {
     });
 });
 // ── Routes ────────────────────────────────────────────────────────────────────
-app.use("/api", routes_1.default);
+app.use("/api/v1", routes_1.default);
 // ── 404 handler ───────────────────────────────────────────────────────────────
 app.use((req, res) => {
     (0, apiResponse_1.sendError)(res, `Cannot ${req.method} ${req.originalUrl}`, 404);

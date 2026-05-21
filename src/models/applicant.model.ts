@@ -40,8 +40,6 @@ const applicantSchema = new Schema<IApplicant>(
   { timestamps: true },
 );
 
-applicantSchema.index({ email: 1 });
-
 export const Applicant = mongoose.model<IApplicant>(
   "Applicant",
   applicantSchema,

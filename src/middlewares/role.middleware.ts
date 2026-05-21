@@ -1,10 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import { ApiError } from "../utils/apiError";
 import { AdminRole } from "../interfaces/user.interface";
-import { AuthRequest } from "./auth.middleware";
 
 export const restrictTo = (...roles: AdminRole[]) => {
-  return (req: AuthRequest, _res: Response, next: NextFunction): void => {
+  return (req: Request, _res: Response, next: NextFunction): void => {
     if (!req.user) {
       throw new ApiError("Not authenticated.", 401);
     }
@@ -24,7 +23,7 @@ export const restrictTo = (...roles: AdminRole[]) => {
  * the officer's assigned center. super_admin bypasses this.
  */
 export const scopeToCenter = (
-  req: AuthRequest,
+  req: Request,
   _res: Response,
   next: NextFunction,
 ): void => {

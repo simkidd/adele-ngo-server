@@ -1,21 +1,14 @@
 import { NextFunction, Request, Response } from "express";
-import { config } from "../config";
-import { asyncHandler } from "../utils/asyncHandler";
-import { ApiError } from "../utils/apiError";
-import jwt, { JwtPayload } from "jsonwebtoken";
-import User from "../models/user.model";
-import { env } from "process";
+import { JwtPayload } from "jsonwebtoken";
 import { Applicant } from "../models/applicant.model";
+import User from "../models/user.model";
 import { verifyToken } from "../services/token.service";
-
-export interface AuthRequest extends Request {
-  user?: any;
-  applicant?: any;
-}
+import { ApiError } from "../utils/apiError";
+import { asyncHandler } from "../utils/asyncHandler";
 
 // ── Admin auth ────────────────────────────────────────────────────────────────
 export const protectAdmin = asyncHandler(
-  async (req: AuthRequest, _res: Response, next: NextFunction) => {
+  async (req: Request, _res: Response, next: NextFunction) => {
     const token = req.header("Authorization")?.replace("Bearer ", "");
     if (!token) {
       throw new ApiError("Not authenticated. Please log in.", 401);
@@ -44,7 +37,7 @@ export const protectAdmin = asyncHandler(
 
 // ── Applicant auth ────────────────────────────────────────────────────────────
 export const protectApplicant = asyncHandler(
-  async (req: AuthRequest, _res: Response, next: NextFunction) => {
+  async (req: Request, _res: Response, next: NextFunction) => {
     const token = req.header("Authorization")?.replace("Bearer ", "");
     if (!token) {
       throw new ApiError("Not authenticated. Please log in.", 401);

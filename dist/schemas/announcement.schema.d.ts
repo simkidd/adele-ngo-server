@@ -3,15 +3,15 @@ export declare const createAnnouncementSchema: z.ZodObject<{
     title: z.ZodString;
     body: z.ZodString;
     type: z.ZodDefault<z.ZodEnum<{
-        General: "General";
-        Cohort: "Cohort";
         Program: "Program";
+        Cohort: "Cohort";
+        General: "General";
         Alert: "Alert";
     }>>;
     audience: z.ZodDefault<z.ZodEnum<{
+        Enrolled: "Enrolled";
         Public: "Public";
         Applicants: "Applicants";
-        Enrolled: "Enrolled";
         All: "All";
     }>>;
     status: z.ZodDefault<z.ZodEnum<{
@@ -25,15 +25,15 @@ export declare const updateAnnouncementSchema: z.ZodObject<{
     title: z.ZodOptional<z.ZodString>;
     body: z.ZodOptional<z.ZodString>;
     type: z.ZodOptional<z.ZodDefault<z.ZodEnum<{
-        General: "General";
-        Cohort: "Cohort";
         Program: "Program";
+        Cohort: "Cohort";
+        General: "General";
         Alert: "Alert";
     }>>>;
     audience: z.ZodOptional<z.ZodDefault<z.ZodEnum<{
+        Enrolled: "Enrolled";
         Public: "Public";
         Applicants: "Applicants";
-        Enrolled: "Enrolled";
         All: "All";
     }>>>;
     status: z.ZodOptional<z.ZodDefault<z.ZodEnum<{

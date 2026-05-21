@@ -1,5 +1,4 @@
 import { z } from "zod";
-export declare const slugify: (s: string) => string;
 export declare const createBlogSchema: z.ZodObject<{
     title: z.ZodString;
     slug: z.ZodPipe<z.ZodOptional<z.ZodString>, z.ZodTransform<string | undefined, string | undefined>>;

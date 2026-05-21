@@ -1,11 +1,5 @@
 import { z } from "zod";
-
-export const slugify = (s: string) =>
-  s
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
+import { slugify } from "../utils/helpers";
 
 export const createBlogSchema = z.object({
   title: z.string().min(5, "Title must be at least 5 characters"),

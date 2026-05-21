@@ -77,7 +77,7 @@ exports.adminLogout = (0, asyncHandler_1.asyncHandler)(async (req, res) => {
 });
 exports.getAdminMe = (0, asyncHandler_1.asyncHandler)(async (req, res) => {
     (0, apiResponse_1.sendSuccess)(res, {
-        id: req.user.id,
+        id: req.user._id,
         fullName: req.user.fullName,
         email: req.user.email,
         role: req.user.role,
@@ -87,12 +87,12 @@ exports.getAdminMe = (0, asyncHandler_1.asyncHandler)(async (req, res) => {
 });
 exports.updateAdminMe = (0, asyncHandler_1.asyncHandler)(async (req, res) => {
     const { fullName, email } = req.body;
-    const user = await user_model_1.default.findByIdAndUpdate(req.user.id, { fullName, email }, { new: true, runValidators: true });
+    const user = await user_model_1.default.findByIdAndUpdate(req.user._id, { fullName, email }, { new: true, runValidators: true });
     (0, apiResponse_1.sendSuccess)(res, user, "Profile updated");
 });
 exports.changeAdminPassword = (0, asyncHandler_1.asyncHandler)(async (req, res) => {
     const { currentPassword, newPassword } = req.body;
-    const user = await user_model_1.default.findById(req.user.id).select("+password");
+    const user = await user_model_1.default.findById(req.user._id).select("+password");
     if (!user || !(await (0, auth_1.comparePassword)(currentPassword, user.password))) {
         (0, apiResponse_1.sendError)(res, "Current password is incorrect", 401);
         return;

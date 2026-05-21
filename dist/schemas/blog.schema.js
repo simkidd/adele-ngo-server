@@ -1,13 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateBlogSchema = exports.createBlogSchema = exports.slugify = void 0;
+exports.updateBlogSchema = exports.createBlogSchema = void 0;
 const zod_1 = require("zod");
-const slugify = (s) => s
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-exports.slugify = slugify;
+const helpers_1 = require("../utils/helpers");
 exports.createBlogSchema = zod_1.z.object({
     title: zod_1.z.string().min(5, "Title must be at least 5 characters"),
     slug: zod_1.z
@@ -15,10 +10,10 @@ exports.createBlogSchema = zod_1.z.object({
         .optional()
         .transform((s, ctx) => {
         if (s)
-            return (0, exports.slugify)(s);
+            return (0, helpers_1.slugify)(s);
         const title = ctx?.parent
             ?.title;
-        return title ? (0, exports.slugify)(title) : s;
+        return title ? (0, helpers_1.slugify)(title) : s;
     }),
     excerpt: zod_1.z
         .string()

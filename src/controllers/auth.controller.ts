@@ -10,7 +10,6 @@ import { ApiError } from "../utils/apiError";
 import { config } from "../config";
 import { comparePassword } from "../utils/auth";
 import { asyncHandler } from "../utils/asyncHandler";
-import { AuthRequest } from "../middlewares/auth.middleware";
 
 const REFRESH_COOKIE_OPTIONS = {
   httpOnly: true,
@@ -105,9 +104,9 @@ export const adminLogout = asyncHandler(
 );
 
 export const getAdminMe = asyncHandler(
-  async (req: AuthRequest, res: Response): Promise<void> => {
+  async (req: Request, res: Response): Promise<void> => {
     sendSuccess(res, {
-      id: req.user!.id,
+      id: req.user!._id,
       fullName: req.user!.fullName,
       email: req.user!.email,
       role: req.user!.role,
@@ -118,10 +117,10 @@ export const getAdminMe = asyncHandler(
 );
 
 export const updateAdminMe = asyncHandler(
-  async (req: AuthRequest, res: Response): Promise<void> => {
+  async (req: Request, res: Response): Promise<void> => {
     const { fullName, email } = req.body;
     const user = await User.findByIdAndUpdate(
-      req.user!.id,
+      req.user!._id,
       { fullName, email },
       { new: true, runValidators: true },
     );
@@ -130,10 +129,10 @@ export const updateAdminMe = asyncHandler(
 );
 
 export const changeAdminPassword = asyncHandler(
-  async (req: AuthRequest, res: Response): Promise<void> => {
+  async (req: Request, res: Response): Promise<void> => {
     const { currentPassword, newPassword } = req.body;
 
-    const user = await User.findById(req.user!.id).select("+password");
+    const user = await User.findById(req.user!._id).select("+password");
     if (!user || !(await comparePassword(currentPassword, user.password))) {
       sendError(res, "Current password is incorrect", 401);
       return;

@@ -1,8 +1,3 @@
-import { Request } from "express";
-export interface AuthRequest extends Request {
-    user?: any;
-    applicant?: any;
-}
 export declare const protectAdmin: import("express").RequestHandler<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
 export declare const protectApplicant: import("express").RequestHandler<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
 //# sourceMappingURL=auth.middleware.d.ts.map
