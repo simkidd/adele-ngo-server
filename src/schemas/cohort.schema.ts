@@ -12,17 +12,18 @@ const centerCohortSchema = z.object({
     .min(1, "At least one program is required"),
 });
 
-export const createCohortSchema = z
-  .object({
-    name: z.string().min(3, "Cohort name is required"),
-    applicationStart: z.string().min(1, "Application start date is required"),
-    applicationEnd: z.string().min(1, "Application end date is required"),
-    startDate: z.string().min(1, "Training start date is required"),
-    endDate: z.string().min(1, "Training end date is required"),
-    centers: z
-      .array(centerCohortSchema)
-      .min(1, "At least one center must be configured"),
-  })
+const cohortBaseSchema = z.object({
+  name: z.string().min(3, "Cohort name is required"),
+  applicationStart: z.string().min(1, "Application start date is required"),
+  applicationEnd: z.string().min(1, "Application end date is required"),
+  startDate: z.string().min(1, "Training start date is required"),
+  endDate: z.string().min(1, "Training end date is required"),
+  centers: z
+    .array(centerCohortSchema)
+    .min(1, "At least one center must be configured"),
+});
+
+export const createCohortSchema = cohortBaseSchema
   .refine((d) => new Date(d.applicationEnd) > new Date(d.applicationStart), {
     message: "Application end date must be after start date",
     path: ["applicationEnd"],
@@ -36,7 +37,10 @@ export const createCohortSchema = z
     path: ["endDate"],
   });
 
-export const updateCohortSchema = createCohortSchema.partial();
+export const updateCohortSchema = cohortBaseSchema.partial().refine((d) => {
+  if (!d.applicationStart || !d.applicationEnd) return true;
+  return new Date(d.applicationEnd) > new Date(d.applicationStart);
+});
 
 export const cohortStatusSchema = z.object({
   status: z.enum(["Draft", "Open", "Closed", "Active", "Completed"]),

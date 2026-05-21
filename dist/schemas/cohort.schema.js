@@ -12,8 +12,7 @@ const centerCohortSchema = zod_1.z.object({
         .array(centerProgramSchema)
         .min(1, "At least one program is required"),
 });
-exports.createCohortSchema = zod_1.z
-    .object({
+const cohortBaseSchema = zod_1.z.object({
     name: zod_1.z.string().min(3, "Cohort name is required"),
     applicationStart: zod_1.z.string().min(1, "Application start date is required"),
     applicationEnd: zod_1.z.string().min(1, "Application end date is required"),
@@ -22,7 +21,8 @@ exports.createCohortSchema = zod_1.z
     centers: zod_1.z
         .array(centerCohortSchema)
         .min(1, "At least one center must be configured"),
-})
+});
+exports.createCohortSchema = cohortBaseSchema
     .refine((d) => new Date(d.applicationEnd) > new Date(d.applicationStart), {
     message: "Application end date must be after start date",
     path: ["applicationEnd"],
@@ -35,7 +35,11 @@ exports.createCohortSchema = zod_1.z
     message: "Training end date must be after start date",
     path: ["endDate"],
 });
-exports.updateCohortSchema = exports.createCohortSchema.partial();
+exports.updateCohortSchema = cohortBaseSchema.partial().refine((d) => {
+    if (!d.applicationStart || !d.applicationEnd)
+        return true;
+    return new Date(d.applicationEnd) > new Date(d.applicationStart);
+});
 exports.cohortStatusSchema = zod_1.z.object({
     status: zod_1.z.enum(["Draft", "Open", "Closed", "Active", "Completed"]),
 });

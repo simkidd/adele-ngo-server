@@ -59,7 +59,6 @@ const blogPostSchema = new mongoose_1.Schema({
     readTime: { type: Number, default: 3 },
     publishedAt: { type: Date },
 }, { timestamps: true });
-blogPostSchema.index({ slug: 1 });
 blogPostSchema.index({ status: 1, category: 1 });
 blogPostSchema.index({ title: "text", body: "text" });
 exports.BlogPost = mongoose_1.default.model("BlogPost", blogPostSchema);
