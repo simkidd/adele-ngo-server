@@ -9,7 +9,6 @@ import routes from "./routes";
 import {
   authLimiter,
   globalLimiter,
-  ninLimiter,
 } from "./middlewares/rate-limiter.middleware";
 import { sendError } from "./utils/apiResponse";
 import { errorHandler } from "./middlewares/error.middleware";
@@ -31,7 +30,6 @@ app.use(
 app.use(globalLimiter);
 app.use("/api/auth/login", authLimiter);
 app.use("/api/applicant/login", authLimiter);
-app.use("/api/applicant/nin", ninLimiter);
 
 // ── Body & Cookies ────────────────────────────────────────────────────────────
 app.use(express.json({ limit: "10mb" }));

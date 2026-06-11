@@ -4,9 +4,6 @@ const nigerianPhone = z
   .string()
   .regex(/^(\+234|0)[789][01]\d{8}$/, "Enter a valid Nigerian phone number");
 
-export const ninVerifySchema = z.object({
-  nin: z.string().regex(/^\d{11}$/, "NIN must be exactly 11 digits"),
-});
 
 export const registrationStep2Schema = z.object({
   phone: nigerianPhone,
@@ -126,6 +123,7 @@ export const fullRegistrationSchema = z
     emergencyName: z.string().min(2),
     emergencyPhone: nigerianPhone,
     emergencyRelation: z.string().min(1),
+    passportPhoto: z.string().optional().or(z.literal("")),
 
     // Step 7
     password: z.string().min(8),
@@ -145,4 +143,3 @@ export const updateStatusSchema = z.object({
 
 export type FullRegistrationInput = z.infer<typeof fullRegistrationSchema>;
 export type UpdateStatusInput = z.infer<typeof updateStatusSchema>;
-export type NinVerifyInput = z.infer<typeof ninVerifySchema>;

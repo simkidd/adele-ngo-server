@@ -1,7 +1,4 @@
 import { z } from "zod";
-export declare const ninVerifySchema: z.ZodObject<{
-    nin: z.ZodString;
-}, z.core.$strip>;
 export declare const registrationStep2Schema: z.ZodObject<{
     phone: z.ZodString;
     whatsapp: z.ZodUnion<[z.ZodOptional<z.ZodString>, z.ZodLiteral<"">]>;
@@ -96,6 +93,7 @@ export declare const fullRegistrationSchema: z.ZodObject<{
     emergencyName: z.ZodString;
     emergencyPhone: z.ZodString;
     emergencyRelation: z.ZodString;
+    passportPhoto: z.ZodUnion<[z.ZodOptional<z.ZodString>, z.ZodLiteral<"">]>;
     password: z.ZodString;
     confirmPassword: z.ZodString;
     acceptTerms: z.ZodLiteral<true>;
@@ -113,5 +111,4 @@ export declare const updateStatusSchema: z.ZodObject<{
 }, z.core.$strip>;
 export type FullRegistrationInput = z.infer<typeof fullRegistrationSchema>;
 export type UpdateStatusInput = z.infer<typeof updateStatusSchema>;
-export type NinVerifyInput = z.infer<typeof ninVerifySchema>;
 //# sourceMappingURL=registration.schema.d.ts.map

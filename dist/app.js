@@ -26,7 +26,6 @@ app.use((0, cors_1.default)({
 app.use(rate_limiter_middleware_1.globalLimiter);
 app.use("/api/auth/login", rate_limiter_middleware_1.authLimiter);
 app.use("/api/applicant/login", rate_limiter_middleware_1.authLimiter);
-app.use("/api/applicant/nin", rate_limiter_middleware_1.ninLimiter);
 // ── Body & Cookies ────────────────────────────────────────────────────────────
 app.use(express_1.default.json({ limit: "10mb" }));
 app.use(express_1.default.urlencoded({ extended: true, limit: "10mb" }));

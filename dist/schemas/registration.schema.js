@@ -1,13 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateStatusSchema = exports.fullRegistrationSchema = exports.registrationStep7Schema = exports.registrationStep6Schema = exports.registrationStep5Schema = exports.registrationStep4Schema = exports.registrationStep3Schema = exports.registrationStep2Schema = exports.ninVerifySchema = void 0;
+exports.updateStatusSchema = exports.fullRegistrationSchema = exports.registrationStep7Schema = exports.registrationStep6Schema = exports.registrationStep5Schema = exports.registrationStep4Schema = exports.registrationStep3Schema = exports.registrationStep2Schema = void 0;
 const zod_1 = require("zod");
 const nigerianPhone = zod_1.z
     .string()
     .regex(/^(\+234|0)[789][01]\d{8}$/, "Enter a valid Nigerian phone number");
-exports.ninVerifySchema = zod_1.z.object({
-    nin: zod_1.z.string().regex(/^\d{11}$/, "NIN must be exactly 11 digits"),
-});
 exports.registrationStep2Schema = zod_1.z.object({
     phone: nigerianPhone,
     whatsapp: nigerianPhone.optional().or(zod_1.z.literal("")),
@@ -115,6 +112,7 @@ exports.fullRegistrationSchema = zod_1.z
     emergencyName: zod_1.z.string().min(2),
     emergencyPhone: nigerianPhone,
     emergencyRelation: zod_1.z.string().min(1),
+    passportPhoto: zod_1.z.string().optional().or(zod_1.z.literal("")),
     // Step 7
     password: zod_1.z.string().min(8),
     confirmPassword: zod_1.z.string(),
