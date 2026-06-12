@@ -21,7 +21,7 @@ router.use("/cohorts", cohortRoutes);
 router.use("/registrations", registrationRoutes);
 router.use("/certificates", certificateRoutes);
 router.use("/announcements", announcementRoutes);
-router.use("/blog", blogRoutes);
+router.use("/blogs", blogRoutes);
 router.use("/events", eventRoutes);
 router.use("/submissions", submissionRoutes);
 router.use("/centers", centerRoutes);

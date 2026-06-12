@@ -33,7 +33,7 @@ const listSubmissions = async (req, res) => {
         total,
         unread,
         page: Number(page),
-        pages: Math.ceil(total / Number(limit)),
+        totalPages: Math.ceil(total / Number(limit)),
     });
 };
 exports.listSubmissions = listSubmissions;

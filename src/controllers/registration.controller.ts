@@ -51,7 +51,7 @@ export const listRegistrations = async (
   sendSuccess(res, registrations, "OK", 200, {
     total,
     page: Number(page),
-    pages: Math.ceil(total / Number(limit)),
+    totalPages: Math.ceil(total / Number(limit)),
     limit: Number(limit),
   });
 };

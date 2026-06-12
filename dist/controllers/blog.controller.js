@@ -35,7 +35,7 @@ const listPosts = async (req, res) => {
     (0, apiResponse_1.sendSuccess)(res, posts, "OK", 200, {
         total,
         page: Number(page),
-        pages: Math.ceil(total / Number(limit)),
+        totalPages: Math.ceil(total / Number(limit)),
     });
 };
 exports.listPosts = listPosts;
@@ -54,7 +54,7 @@ const getPublishedPosts = async (req, res) => {
     (0, apiResponse_1.sendSuccess)(res, posts, "OK", 200, {
         total,
         page: Number(page),
-        pages: Math.ceil(total / Number(limit)),
+        totalPages: Math.ceil(total / Number(limit)),
     });
 };
 exports.getPublishedPosts = getPublishedPosts;

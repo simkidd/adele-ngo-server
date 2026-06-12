@@ -72,6 +72,6 @@ export const listCertificates = async (
   sendSuccess(res, certs, "OK", 200, {
     total,
     page: Number(page),
-    pages: Math.ceil(total / Number(limit)),
+    totalPages: Math.ceil(total / Number(limit)),
   });
 };

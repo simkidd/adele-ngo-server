@@ -24,7 +24,7 @@ router.use("/cohorts", cohort_routes_1.default);
 router.use("/registrations", registration_routes_1.default);
 router.use("/certificates", certificate_routes_1.default);
 router.use("/announcements", announcement_routes_1.default);
-router.use("/blog", blog_routes_1.default);
+router.use("/blogs", blog_routes_1.default);
 router.use("/events", event_routes_1.default);
 router.use("/submissions", submission_routes_1.default);
 router.use("/centers", center_routes_1.default);
