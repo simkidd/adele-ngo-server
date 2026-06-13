@@ -28,8 +28,11 @@ router.use(auth_middleware_1.protectApplicant);
 router.get("/me", (0, asyncHandler_1.asyncHandler)(applicant_controller_1.getApplicantMe));
 router.patch("/me", (0, asyncHandler_1.asyncHandler)(applicant_controller_1.updateApplicantProfile));
 router.patch("/me/password", (0, asyncHandler_1.asyncHandler)(applicant_controller_1.changeApplicantPassword));
-router.get("/application", (0, asyncHandler_1.asyncHandler)(applicant_controller_1.getApplicantApplication));
+router.get("/applications", (0, asyncHandler_1.asyncHandler)(applicant_controller_1.getApplicantApplications));
+router.get("/application/:id", (0, asyncHandler_1.asyncHandler)(applicant_controller_1.getApplicantApplication));
 router.get("/certificate", (0, asyncHandler_1.asyncHandler)(applicant_controller_1.getApplicantCertificate));
 router.get("/announcements", (0, asyncHandler_1.asyncHandler)(applicant_controller_1.getApplicantAnnouncements));
+router.get("/dashboard", (0, asyncHandler_1.asyncHandler)(applicant_controller_1.getApplicantDashboard));
+router.post("/application/apply", (0, asyncHandler_1.asyncHandler)(applicant_controller_1.createReturningApplication));
 exports.default = router;
 //# sourceMappingURL=applicant.routes.js.map

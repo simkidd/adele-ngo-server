@@ -10,6 +10,9 @@ import {
   getApplicantApplication,
   getApplicantCertificate,
   getApplicantAnnouncements,
+  getApplicantDashboard,
+  getApplicantApplications,
+  createReturningApplication,
 } from "../controllers/applicant.controller";
 import { asyncHandler } from "../utils/asyncHandler";
 import { validate } from "../middlewares/validate.middleware";
@@ -50,8 +53,11 @@ router.use(protectApplicant);
 router.get("/me", asyncHandler(getApplicantMe));
 router.patch("/me", asyncHandler(updateApplicantProfile));
 router.patch("/me/password", asyncHandler(changeApplicantPassword));
-router.get("/application", asyncHandler(getApplicantApplication));
+router.get("/applications", asyncHandler(getApplicantApplications));
+router.get("/application/:id", asyncHandler(getApplicantApplication));
 router.get("/certificate", asyncHandler(getApplicantCertificate));
 router.get("/announcements", asyncHandler(getApplicantAnnouncements));
+router.get("/dashboard", asyncHandler(getApplicantDashboard));
+router.post("/application/apply", asyncHandler(createReturningApplication));
 
 export default router;

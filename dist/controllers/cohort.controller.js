@@ -4,6 +4,7 @@ exports.getOpenCohort = exports.updateCohortStatus = exports.updateCohort = expo
 const cohort_model_1 = require("../models/cohort.model");
 const apiError_1 = require("../utils/apiError");
 const apiResponse_1 = require("../utils/apiResponse");
+const registration_model_1 = require("../models/registration.model");
 const createCohort = async (req, res) => {
     // Only one Open or Active cohort allowed at a time
     const active = await cohort_model_1.Cohort.findOne({ status: { $in: ["Open", "Active"] } });
@@ -82,12 +83,20 @@ const updateCohortStatus = async (req, res) => {
             (0, apiResponse_1.sendError)(res, `"${conflict.name}" is already ${conflict.status}. Close it before opening a new cohort.`, 409);
             return;
         }
+        cohort.publishedAt = new Date();
+    }
+    if (status === "Completed") {
+        cohort.completedAt = new Date();
+        await registration_model_1.Registration.updateMany({
+            cohort: cohort._id,
+            status: { $in: ["Verified", "Enrolled"] },
+        }, {
+            $set: {
+                status: "Completed",
+            },
+        });
     }
     cohort.status = status;
-    if (status === "Open")
-        cohort.publishedAt = new Date();
-    if (status === "Completed")
-        cohort.completedAt = new Date();
     await cohort.save();
     (0, apiResponse_1.sendSuccess)(res, cohort, `Cohort status updated to ${status}`);
 };

@@ -1,5 +1,5 @@
 import { Document, Types } from "mongoose";
-export type RegistrationStatus = "Pending" | "Accepted" | "Verified" | "Enrolled" | "Rejected";
+export type RegistrationStatus = "Pending" | "Accepted" | "Verified" | "Enrolled" | "Completed" | "Rejected";
 export type Qualification = "No formal education" | "Primary School" | "Junior Secondary (JSS)" | "Senior Secondary (SSCE/WAEC/NECO)" | "OND / NCE" | "HND / B.Sc and above" | "Vocational/Technical Certificate";
 export type EmploymentStatus = "Unemployed" | "Self-employed (informal)" | "Employed part-time" | "Employed full-time" | "Student";
 export type PriorExperience = "None" | "Basic / Self-taught" | "Intermediate" | "Advanced";

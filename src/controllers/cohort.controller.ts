@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { Cohort } from "../models/cohort.model";
 import { ApiError } from "../utils/apiError";
 import { sendSuccess, sendError } from "../utils/apiResponse";
+import { Registration } from "../models/registration.model";
 
 export const createCohort = async (
   req: Request,
@@ -109,11 +110,27 @@ export const updateCohortStatus = async (
       );
       return;
     }
+
+    cohort.publishedAt = new Date();
+  }
+
+  if (status === "Completed") {
+    cohort.completedAt = new Date();
+
+    await Registration.updateMany(
+      {
+        cohort: cohort._id,
+        status: { $in: ["Verified", "Enrolled"] },
+      },
+      {
+        $set: {
+          status: "Completed",
+        },
+      },
+    );
   }
 
   cohort.status = status;
-  if (status === "Open") cohort.publishedAt = new Date();
-  if (status === "Completed") cohort.completedAt = new Date();
   await cohort.save();
 
   sendSuccess(res, cohort, `Cohort status updated to ${status}`);

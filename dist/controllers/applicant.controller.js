@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getApplicantAnnouncements = exports.getApplicantCertificate = exports.getApplicantApplication = exports.changeApplicantPassword = exports.updateApplicantProfile = exports.getApplicantMe = exports.logoutApplicant = exports.refreshApplicantToken = exports.loginApplicant = exports.registerApplicant = void 0;
+exports.createReturningApplication = exports.getApplicantDashboard = exports.getApplicantAnnouncements = exports.getApplicantCertificate = exports.getApplicantApplication = exports.getApplicantApplications = exports.changeApplicantPassword = exports.updateApplicantProfile = exports.getApplicantMe = exports.logoutApplicant = exports.refreshApplicantToken = exports.loginApplicant = exports.registerApplicant = void 0;
 const generateRefNumber_1 = require("../utils/generateRefNumber");
 const mail_service_1 = require("../services/mail.service");
 const config_1 = require("../config");
@@ -206,46 +206,23 @@ const logoutApplicant = async (req, res) => {
     (0, apiResponse_1.sendSuccess)(res, null, "Logged out successfully");
 };
 exports.logoutApplicant = logoutApplicant;
-// ── Dashboard: Get me (profile + current application) ────────────────────────
+// ── Dashboard: Get me (profile) ────────────────────────
 const getApplicantMe = async (req, res) => {
     const applicant = req.applicant;
-    // Current registration (most recent)
-    const registration = await registration_model_1.Registration.findOne({
-        applicantId: applicant._id,
-    })
-        .populate("programId", "title category")
-        .populate("centerId", "name address")
-        .populate("cohortId", "name startDate endDate status")
-        .sort("-createdAt");
-    // Certificate (if issued)
-    const certificate = registration
-        ? await certificate_model_1.Certificate.findOne({ registrationId: registration.id })
-        : null;
-    // Unread announcements
-    const announcements = await announcement_model_1.Announcement.find({
-        status: "Published",
-        audience: {
-            $in: [
-                "Public",
-                "All",
-                registration?.status === "Enrolled" ? "Enrolled" : "Applicants",
-            ],
-        },
-    })
-        .sort("-publishedAt")
-        .limit(5);
     (0, apiResponse_1.sendSuccess)(res, {
-        applicant: {
-            id: applicant._id,
-            fullName: applicant.fullName,
-            email: applicant.email,
-            phone: applicant.phone,
-            passportPhoto: applicant.passportPhoto,
-            biometricEnrolled: applicant.biometricEnrolled,
-        },
-        registration,
-        certificate,
-        announcements,
+        id: applicant._id,
+        fullName: applicant.fullName,
+        email: applicant.email,
+        phone: applicant.phone,
+        whatsapp: applicant.whatsapp,
+        gender: applicant.gender,
+        dob: applicant.dob,
+        stateOfOrigin: applicant.stateOfOrigin,
+        lga: applicant.lga,
+        address: applicant.address,
+        passportPhoto: applicant.passportPhoto,
+        biometricEnrolled: applicant.biometricEnrolled,
+        createdAt: applicant.createdAt,
     });
 };
 exports.getApplicantMe = getApplicantMe;
@@ -275,20 +252,49 @@ const changeApplicantPassword = async (req, res) => {
     (0, apiResponse_1.sendSuccess)(res, null, "Password changed successfully");
 };
 exports.changeApplicantPassword = changeApplicantPassword;
+// ── Dashboard: Get applications ────────────────────────────────────────────
+const getApplicantApplications = async (req, res) => {
+    const applicantId = req.applicant._id;
+    const applications = await registration_model_1.Registration.find({ applicantId })
+        .populate("programId", "title category description")
+        .populate("centerId", "name code address")
+        .populate("cohortId", "name status startDate endDate applicationStart applicationEnd")
+        .populate("secondChoiceId", "title")
+        .sort("-createdAt");
+    const openCohort = await cohort_model_1.Cohort.findOne({ status: "Open" });
+    let currentRegistration = null;
+    let canApply = false;
+    if (openCohort) {
+        currentRegistration = await registration_model_1.Registration.findOne({
+            applicantId,
+            cohortId: openCohort._id,
+        })
+            .populate("programId", "title category")
+            .populate("centerId", "name code")
+            .populate("cohortId", "name status startDate endDate");
+        canApply = !currentRegistration;
+    }
+    (0, apiResponse_1.sendSuccess)(res, {
+        applications,
+        currentRegistration,
+        openCohort,
+        canApply,
+        total: applications.length,
+    });
+};
+exports.getApplicantApplications = getApplicantApplications;
 // ── Dashboard: Get application detail ────────────────────────────────────────
 const getApplicantApplication = async (req, res) => {
     const registration = await registration_model_1.Registration.findOne({
+        _id: String(req.params.id),
         applicantId: req.applicant._id,
     })
         .populate("programId", "title category description")
         .populate("centerId", "name address phone email")
         .populate("cohortId", "name startDate endDate applicationEnd status")
-        .populate("secondChoiceId", "title")
-        .sort("-createdAt");
+        .populate("secondChoiceId", "title");
     if (!registration) {
-        // Check if cohort is open for re-application
-        const openCohort = await cohort_model_1.Cohort.findOne({ status: "Open" });
-        (0, apiResponse_1.sendSuccess)(res, { registration: null, canApply: !!openCohort });
+        (0, apiResponse_1.sendError)(res, "Application not found", 404);
         return;
     }
     (0, apiResponse_1.sendSuccess)(res, { registration });
@@ -326,4 +332,82 @@ const getApplicantAnnouncements = async (req, res) => {
     (0, apiResponse_1.sendSuccess)(res, announcements);
 };
 exports.getApplicantAnnouncements = getApplicantAnnouncements;
+const getApplicantDashboard = async (req, res) => {
+    const applicantId = req.applicant._id;
+    const registration = await registration_model_1.Registration.findOne({
+        applicantId,
+    })
+        .populate("programId", "title category")
+        .populate("centerId", "name code address")
+        .populate("cohortId", "name startDate endDate status")
+        .sort("-createdAt");
+    const certificate = registration
+        ? await certificate_model_1.Certificate.findOne({
+            registrationId: registration._id,
+        })
+        : null;
+    const audience = registration?.status === "Enrolled"
+        ? ["Public", "Applicants", "Enrolled", "All"]
+        : ["Public", "Applicants", "All"];
+    const announcements = await announcement_model_1.Announcement.find({
+        status: "Published",
+        audience: { $in: audience },
+    })
+        .sort("-publishedAt")
+        .limit(5);
+    (0, apiResponse_1.sendSuccess)(res, {
+        registration,
+        certificate,
+        announcements,
+    });
+};
+exports.getApplicantDashboard = getApplicantDashboard;
+const createReturningApplication = async (req, res) => {
+    const applicantId = req.applicant._id;
+    const openCohort = await cohort_model_1.Cohort.findOne({
+        status: "Open",
+    });
+    if (!openCohort) {
+        (0, apiResponse_1.sendError)(res, "No open cohort.", 400);
+        return;
+    }
+    // prevent duplicate application for same cohort
+    const existing = await registration_model_1.Registration.findOne({
+        applicantId,
+        cohortId: openCohort._id,
+    });
+    if (existing) {
+        (0, apiResponse_1.sendError)(res, "You already applied for this cohort.", 400);
+        return;
+    }
+    const center = await center_model_1.Center.findById(req.body.centerId);
+    if (!center) {
+        (0, apiResponse_1.sendError)(res, "Center not found", 404);
+        return;
+    }
+    const referenceNumber = await (0, generateRefNumber_1.generateRefNumber)(center.code);
+    const registration = await registration_model_1.Registration.create({
+        applicantId,
+        cohortId: openCohort._id,
+        centerId: req.body.centerId,
+        programId: req.body.programId,
+        secondChoiceId: req.body.secondChoiceId,
+        qualification: req.body.qualification,
+        employmentStatus: req.body.employmentStatus,
+        priorExperience: req.body.priorExperience,
+        experienceDetail: req.body.experienceDetail,
+        motivation: req.body.motivation,
+        postTrainingPlan: req.body.postTrainingPlan,
+        referralSource: req.body.referralSource,
+        specialNeeds: req.body.specialNeeds,
+        emergencyName: req.body.emergencyName,
+        emergencyPhone: req.body.emergencyPhone,
+        emergencyRelation: req.body.emergencyRelation,
+        status: "Pending",
+        referenceNumber,
+        appliedAt: new Date(),
+    });
+    (0, apiResponse_1.sendSuccess)(res, registration, "Application submitted successfully");
+};
+exports.createReturningApplication = createReturningApplication;
 //# sourceMappingURL=applicant.controller.js.map

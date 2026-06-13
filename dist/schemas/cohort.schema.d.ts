@@ -29,11 +29,11 @@ export declare const updateCohortSchema: z.ZodObject<{
 }, z.core.$strip>;
 export declare const cohortStatusSchema: z.ZodObject<{
     status: z.ZodEnum<{
+        Completed: "Completed";
         Draft: "Draft";
         Open: "Open";
         Closed: "Closed";
         Active: "Active";
-        Completed: "Completed";
     }>;
 }, z.core.$strip>;
 export type CreateCohortInput = z.infer<typeof createCohortSchema>;

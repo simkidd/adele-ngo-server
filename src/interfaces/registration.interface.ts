@@ -5,6 +5,7 @@ export type RegistrationStatus =
   | "Accepted"
   | "Verified"
   | "Enrolled"
+  | "Completed"
   | "Rejected";
 
 export type Qualification =

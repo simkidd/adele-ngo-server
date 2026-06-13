@@ -30,7 +30,14 @@ const registrationSchema = new Schema<IRegistration>(
     referenceNumber: { type: String, required: true, unique: true },
     status: {
       type: String,
-      enum: ["Pending", "Accepted", "Verified", "Enrolled", "Rejected"],
+      enum: [
+        "Pending",
+        "Accepted",
+        "Verified",
+        "Enrolled",
+        "Completed",
+        "Rejected",
+      ],
       default: "Pending",
     },
     verificationDeadline: { type: Date },
