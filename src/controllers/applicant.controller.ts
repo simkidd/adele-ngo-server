@@ -399,7 +399,9 @@ export const getApplicantApplications = async (
     .populate("secondChoiceId", "title")
     .sort("-createdAt");
 
-  const openCohort = await Cohort.findOne({ status: "Open" });
+  const openCohort = await Cohort.findOne({ status: "Open" })
+    .populate("centers.centerId", "name")
+    .populate("centers.programs.programId", "title");
 
   let currentRegistration = null;
   let canApply = false;

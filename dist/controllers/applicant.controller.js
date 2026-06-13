@@ -261,7 +261,9 @@ const getApplicantApplications = async (req, res) => {
         .populate("cohortId", "name status startDate endDate applicationStart applicationEnd")
         .populate("secondChoiceId", "title")
         .sort("-createdAt");
-    const openCohort = await cohort_model_1.Cohort.findOne({ status: "Open" });
+    const openCohort = await cohort_model_1.Cohort.findOne({ status: "Open" })
+        .populate("centers.centerId", "name")
+        .populate("centers.programs.programId", "title");
     let currentRegistration = null;
     let canApply = false;
     if (openCohort) {
