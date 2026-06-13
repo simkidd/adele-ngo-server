@@ -102,7 +102,7 @@ exports.changeAdminPassword = (0, asyncHandler_1.asyncHandler)(async (req, res) 
     (0, apiResponse_1.sendSuccess)(res, null, "Password changed successfully");
 });
 exports.createAdminUser = (0, asyncHandler_1.asyncHandler)(async (req, res) => {
-    const { fullName, email, password, role, centerId } = req.body;
+    const { fullName, email, password: pw, role, centerId } = req.body;
     const existing = await user_model_1.default.findOne({ email });
     if (existing) {
         (0, apiResponse_1.sendError)(res, "An admin with this email already exists", 409);
@@ -111,7 +111,7 @@ exports.createAdminUser = (0, asyncHandler_1.asyncHandler)(async (req, res) => {
     const user = await user_model_1.default.create({
         fullName,
         email,
-        password,
+        password: await (0, auth_1.hashPassword)(pw),
         role,
         centerId: centerId || null,
     });

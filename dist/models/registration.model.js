@@ -49,7 +49,7 @@ const registrationSchema = new mongoose_1.Schema({
     employmentStatus: { type: String, required: true },
     priorExperience: { type: String, required: true },
     experienceDetail: { type: String },
-    motivation: { type: String, required: true, minlength: 50 },
+    motivation: { type: String, required: true, minlength: 20 },
     postTrainingPlan: { type: String, required: true },
     referralSource: { type: String, required: true },
     specialNeeds: { type: String },

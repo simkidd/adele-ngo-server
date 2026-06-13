@@ -4,7 +4,6 @@ const nigerianPhone = z
   .string()
   .regex(/^(\+234|0)[789][01]\d{8}$/, "Enter a valid Nigerian phone number");
 
-
 export const registrationStep2Schema = z.object({
   phone: nigerianPhone,
   whatsapp: nigerianPhone.optional().or(z.literal("")),
@@ -114,7 +113,7 @@ export const fullRegistrationSchema = z
     experienceDetail: z.string().optional(),
 
     // Step 5
-    motivation: z.string().min(50),
+    motivation: z.string().min(20),
     postTrainingPlan: z.string().min(1),
     referralSource: z.string().min(1),
 

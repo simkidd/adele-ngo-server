@@ -18,7 +18,7 @@ import {
   verifyRefreshToken,
 } from "../services/token.service";
 import { sendSuccess, sendError } from "../utils/apiResponse";
-import { comparePassword } from "../utils/auth";
+import { comparePassword, hashPassword } from "../utils/auth";
 import { Certificate } from "../models/certificate.model";
 import { AnnouncementAudience } from "../interfaces/annoucement.interface";
 
@@ -66,7 +66,7 @@ export const registerApplicant = async (
     emergencyPhone,
     emergencyRelation,
     // Step 7
-    password,
+    password: pw,
     // passport photo URL (from Cloudinary upload before form submit)
     passportPhoto,
   } = req.body;
@@ -138,7 +138,7 @@ export const registerApplicant = async (
   // Create applicant account
   const applicant = await Applicant.create({
     email,
-    password,
+    password: await hashPassword(pw),
     fullName,
     dob: new Date(dob),
     gender,

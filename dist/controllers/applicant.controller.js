@@ -40,7 +40,7 @@ const registerApplicant = async (req, res) => {
     // Step 6
     specialNeeds, emergencyName, emergencyPhone, emergencyRelation, 
     // Step 7
-    password, 
+    password: pw, 
     // passport photo URL (from Cloudinary upload before form submit)
     passportPhoto, } = req.body;
     // Check email uniqueness
@@ -80,7 +80,7 @@ const registerApplicant = async (req, res) => {
     // Create applicant account
     const applicant = await applicant_model_1.Applicant.create({
         email,
-        password,
+        password: await (0, auth_1.hashPassword)(pw),
         fullName,
         dob: new Date(dob),
         gender,

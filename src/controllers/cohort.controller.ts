@@ -63,7 +63,7 @@ export const updateCohort = async (
   }
 
   const updated = await Cohort.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
+    returnDocument: "after",
     runValidators: true,
   });
   sendSuccess(res, updated, "Cohort updated");

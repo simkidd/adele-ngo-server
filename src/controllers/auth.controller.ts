@@ -8,7 +8,7 @@ import {
 import { sendSuccess, sendError } from "../utils/apiResponse";
 import { ApiError } from "../utils/apiError";
 import { config } from "../config";
-import { comparePassword } from "../utils/auth";
+import { comparePassword, hashPassword } from "../utils/auth";
 import { asyncHandler } from "../utils/asyncHandler";
 
 const REFRESH_COOKIE_OPTIONS = {
@@ -146,7 +146,7 @@ export const changeAdminPassword = asyncHandler(
 
 export const createAdminUser = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    const { fullName, email, password, role, centerId } = req.body;
+    const { fullName, email, password: pw, role, centerId } = req.body;
 
     const existing = await User.findOne({ email });
     if (existing) {
@@ -157,7 +157,7 @@ export const createAdminUser = asyncHandler(
     const user = await User.create({
       fullName,
       email,
-      password,
+      password: await hashPassword(pw),
       role,
       centerId: centerId || null,
     });

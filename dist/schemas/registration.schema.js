@@ -104,7 +104,7 @@ exports.fullRegistrationSchema = zod_1.z
     priorExperience: zod_1.z.string().min(1),
     experienceDetail: zod_1.z.string().optional(),
     // Step 5
-    motivation: zod_1.z.string().min(50),
+    motivation: zod_1.z.string().min(20),
     postTrainingPlan: zod_1.z.string().min(1),
     referralSource: zod_1.z.string().min(1),
     // Step 6

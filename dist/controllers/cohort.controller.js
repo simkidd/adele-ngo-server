@@ -49,7 +49,7 @@ const updateCohort = async (req, res) => {
         return;
     }
     const updated = await cohort_model_1.Cohort.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
+        returnDocument: "after",
         runValidators: true,
     });
     (0, apiResponse_1.sendSuccess)(res, updated, "Cohort updated");
